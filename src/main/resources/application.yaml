@@ -1,0 +1,22 @@
+server:
+  port: 8888
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/oauth2
+  jpa:
+    hibernate:
+      ddl-auto: update # create, drop, alter, truncate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/e1_ecommerce
+    username: postgres
+    password: 9903
+  application:
+    name: advanced-ecommerce

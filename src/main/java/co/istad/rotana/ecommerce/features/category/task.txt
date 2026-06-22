@@ -1,0 +1,6 @@
+findbyid
+updatebyid (put)
+deletebyid
+findallbypage
+create
+
