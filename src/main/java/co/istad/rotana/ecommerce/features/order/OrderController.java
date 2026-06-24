@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public OrderResponse createNew(
             @Valid @RequestBody CreateOrderRequest createOrderRequest,
             @AuthenticationPrincipal Jwt jwt
     ) {
-        return orderService.createOrder(createOrderRequest,jwt);
+        return orderService.createOrder(createOrderRequest);
     }
 
 

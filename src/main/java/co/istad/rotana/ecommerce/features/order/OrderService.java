@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface OrderService {
-    OrderResponse createOrder(CreateOrderRequest createOrderRequest ,Jwt jwt);
+    OrderResponse createOrder(CreateOrderRequest createOrderRequest);
 
 }

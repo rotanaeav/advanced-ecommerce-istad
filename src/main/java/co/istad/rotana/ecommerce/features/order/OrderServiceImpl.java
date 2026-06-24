@@ -4,9 +4,12 @@ import co.istad.rotana.ecommerce.features.order.dto.CreateOrderRequest;
 import co.istad.rotana.ecommerce.features.order.dto.OrderResponse;
 import co.istad.rotana.ecommerce.features.product.Product;
 import co.istad.rotana.ecommerce.features.product.ProductRepository;
+import co.istad.rotana.ecommerce.security.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,7 +28,12 @@ public class OrderServiceImpl implements OrderService{
     private final OrderMapper orderMapper;
 
     @Override
-    public OrderResponse createOrder(CreateOrderRequest createOrderRequest, Jwt jwt) {
+    public OrderResponse createOrder(CreateOrderRequest createOrderRequest) {
+
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        Jwt jwt = (Jwt) auth.getCredentials();
+        IO.println(jwt.getSubject());
 
         List<OrderLine> validOrderLines = new ArrayList<>();
         final Order order = orderMapper.mapCreateOrderRequestToOrder(createOrderRequest);
@@ -54,7 +62,7 @@ public class OrderServiceImpl implements OrderService{
         // System data generation
         order.setOrderedAt(Instant.now());
         order.setIsDeleted(false);
-        order.setOrderedBy(jwt.getSubject());
+        order.setOrderedBy(AuthUtils.extractUserId());
         order.setOrderLines(validOrderLines);
 
         Order savedOrder = orderRepository.save(order);

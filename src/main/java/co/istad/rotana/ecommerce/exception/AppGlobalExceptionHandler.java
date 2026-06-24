@@ -52,4 +52,10 @@ public class AppGlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, e.getStatusCode());
     }
 
+    @ExceptionHandler(FileUploadException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleFileUploadException(FileUploadException e) {
+        return e.getMessage();
+    }
+
 }
