@@ -4,7 +4,8 @@ import lombok.Builder;
 
 @Builder
 public record FileResponse(
-        String url,
+        String fileExtension,
+        String uri,
         String fileName,
         String fileType,
         Long fileSize

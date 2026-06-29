@@ -14,8 +14,17 @@ import java.util.Objects;
 import java.util.UUID;
 @Service
 public class FileUploadServiceImpl implements FileUploadService{
+private final FileUploadRepository fileUploadRepository;
     @Value("${file-upload.server-path}")
     private String serverPath;
+    @Value("${file-upload.base-uri}")
+    private String baseUri;
+
+    public FileUploadServiceImpl(FileUploadRepository fileUploadRepository) {
+        this.fileUploadRepository = fileUploadRepository;
+    }
+
+
     @Override
     public FileResponse upload(MultipartFile file) {
 
@@ -30,11 +39,19 @@ public class FileUploadServiceImpl implements FileUploadService{
             throw new FileUploadException("File upload failed",e);
         }
 
+        FileUpload fileUpload = new FileUpload();
+        fileUpload.setName(fileName);
+        fileUpload.setExtension(fileExtension);
+        fileUpload.setSize(file.getSize());
+        fileUpload.setContentType(file.getContentType());
+        fileUploadRepository.save(fileUpload);
+
         return FileResponse.builder()
-                .fileName(fileName+"."+fileExtension)
-                .fileType(file.getContentType())
-                .fileSize(file.getSize())
-                .url("localhost:8080/api/v1/files/"+fileName+"."+fileExtension)
+                .fileName(fileUpload.getName())
+                .fileExtension(fileUpload.getExtension())
+                .fileType(fileUpload.getContentType())
+                .fileSize(fileUpload.getSize())
+                .uri(baseUri+"/"+fileUpload.getName()+"."+fileUpload.getExtension())
                 .build();
     }
 }
