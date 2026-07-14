@@ -28,3 +28,9 @@ spring:
     password: 9903
   application:
     name: advanced-ecommerce
+
+keycloak:
+  clien-secret: clyBHwqR407iaOLWde0LaEgKoWDHcupW
+  server-url: http://localhost:8080
+  client-id: e1-springboot-client
+  realm: oauth2

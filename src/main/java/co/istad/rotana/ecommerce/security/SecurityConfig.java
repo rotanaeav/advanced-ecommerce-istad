@@ -48,6 +48,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/files/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/files/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/file/**").permitAll()
+                        .requestMatchers("/scalar/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/v1/auth/register/**").permitAll()
                 .anyRequest().authenticated()
         );
 
