@@ -45,6 +45,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/files/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/files/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/files/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/file/**").permitAll()
                 .anyRequest().authenticated()
         );
