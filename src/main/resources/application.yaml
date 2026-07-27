@@ -13,7 +13,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/oauth2
+          issuer-uri: http://localhost:9988/realms/ecommerce
   jpa:
     hibernate:
       ddl-auto: update # create, drop, alter, truncate
@@ -23,14 +23,14 @@ spring:
         format_sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/e1_ecommerce
-    username: postgres
+    url: jdbc:postgresql://localhost:9999/db_ecommerce
+    username: rotana
     password: 9903
   application:
     name: advanced-ecommerce
 
 keycloak:
-  clien-secret: clyBHwqR407iaOLWde0LaEgKoWDHcupW
-  server-url: http://localhost:8080
+  clien-secret: l8u35IMHs9ouxPdsuwDiEDiYjKaqu0ItB4zIE9h6pevM1TSjIjHax8NsMFhlvHxuRezPJMDpV0rufjZiadAPpe
+  server-url: http://localhost:9988
   client-id: e1-springboot-client
-  realm: oauth2
+  realm: ecommerce
