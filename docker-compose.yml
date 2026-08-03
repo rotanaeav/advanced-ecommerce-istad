@@ -5,6 +5,19 @@ volumes:
   adv-ecommerce-db-vol:
   keycloak-e1-vol:
 services:
+  adv-ecommerce-api:
+    image: adv-ecommerce-api:latest
+    build:
+      context: . #Dockerfile
+    container_name: adv-ecommerce-api
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://adv-ecommerce-db:5432/db_ecommerce
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http:/localhost:9988/realms/ecommerce
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak-e1:8080/realms/ecommerce/protocol/openid-connect/certs
+    networks:
+      - adv-net
   adv-ecommerce-db:
     image: postgres:18.4
     container_name: adv-ecommerce-db
@@ -22,26 +35,27 @@ services:
     image: quay.io/keycloak/keycloak:26.7.0
     container_name: keycloak-e1
     environment:
-      # Database Configuration
+      # Database
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://adv-ecommerce-db:5432/db_keycloak
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
 
-      # Admin User
+      # Admin
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
 
-      # Production Settings
+      # Hostname v2 (Keycloak 26)
       KC_HOSTNAME: ${KC_HOSTNAME}
       KC_HOSTNAME_PORT: ${KC_HOSTNAME_PORT}
-      KC_HOSTNAME_STRICT: false               # set to true if HTTPS
-      KC_HOSTNAME_STRICT_HTTPS: false         # set to true if HTTPS
       KC_HOSTNAME_URL: ${KC_HOSTNAME_URL}
       KC_HOSTNAME_ADMIN_URL: ${KC_HOSTNAME_URL}
-      KC_PROXY: edge
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
       KC_HTTP_ENABLED: true
-      #KC_HTTPS_PORT: 443
+      KC_PROXY: edge
+
+      # Other settings
       KC_PROXY_HEADERS: xforwarded
       KC_CACHE: ispn
       KC_LOG_LEVEL: INFO
