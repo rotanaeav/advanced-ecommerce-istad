@@ -14,7 +14,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9988/realms/ecommerce
-          jwk-set-uri: http://localhost:9988/realms/ecommerce/protocol/openid-connect/certs
   jpa:
     hibernate:
       ddl-auto: update # create, drop, alter, truncate

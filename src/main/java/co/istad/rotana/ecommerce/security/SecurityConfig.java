@@ -1,5 +1,6 @@
 package co.istad.rotana.ecommerce.security;
 
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -38,6 +38,7 @@ public class SecurityConfig {
 
         // 3. Endpoints security
         http.authorizeHttpRequests(endpoint -> endpoint
+                        .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
 //                .requestMatchers(HttpMethod.POST, "/api/v1/products/**")
 //                .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyRole("BUSINESS", "ADMIN")
 //                .requestMatchers(HttpMethod.PATCH, "/api/v1/products/**").hasAnyRole("BUSINESS", "ADMIN")
@@ -49,6 +50,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/files/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/file/**").permitAll()
                         .requestMatchers("/scalar/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/v1/auth/register/**").permitAll()
                 .anyRequest().authenticated()
         );
@@ -77,4 +79,3 @@ public class SecurityConfig {
     }
 
 }
-
